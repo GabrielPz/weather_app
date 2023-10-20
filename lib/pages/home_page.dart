@@ -9,6 +9,7 @@ import 'package:weather_app/widgets/cards.dart';
 import '../bloc/weather_bloc_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -49,6 +50,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting("pt_BR", null);
     return Scaffold(
         backgroundColor: Colors.black,
         extendBodyBehindAppBar: true,
@@ -140,7 +142,7 @@ class HomePage extends StatelessWidget {
                               ),
                               Center(
                                 child: Text(
-                                  DateFormat('EEEE dd .')
+                                  DateFormat('EEEE dd', 'pt_BR')
                                       .format(state.weather.date!),
                                   style: TextStyle(
                                       color: Colors.white,
@@ -158,13 +160,13 @@ class HomePage extends StatelessWidget {
                                   CardRow(
                                       imageUrl: 'assets/11.png',
                                       tittle: 'Nascer do Sol',
-                                      subtittle: DateFormat()
+                                      subtittle: DateFormat('', 'pt_BR')
                                           .add_jm()
                                           .format(state.weather.sunrise!)),
                                   CardRow(
                                       imageUrl: 'assets/12.png',
                                       tittle: 'Pôr do Sol',
-                                      subtittle: DateFormat()
+                                      subtittle: DateFormat('', 'pt_BR')
                                           .add_jm()
                                           .format(state.weather.sunset!)),
                                 ],
