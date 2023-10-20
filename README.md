@@ -1,6 +1,7 @@
 # Weather App
 
-Este é um aplicativo de previsão do tempo que exibe informações sobre o clima atual, como umidade, nascer do sol, pôr do sol, temperatura mínima, temperatura máxima e outras informações relevantes. A interface do aplicativo é dinâmica e muda com base na hora e nas condições climáticas.
+Este é um aplicativo de previsão do tempo que exibe informações sobre o clima atual, como temperatura atual, nascer do sol, pôr do sol, temperatura mínima, temperatura máxima e outras informações relevantes. A interface do aplicativo é dinâmica e muda com base na hora e nas condições climáticas.
+É um projeto feito para o estudo e aplicação da ferramenta BLOC.
 
 ## Recursos Principais
 
@@ -10,9 +11,7 @@ Este é um aplicativo de previsão do tempo que exibe informações sobre o clim
 
 ## Capturas de Tela
 
-![Tela 1](screenshots/tela1.png)
-![Tela 2](screenshots/tela2.png)
-![Tela 3](screenshots/tela3.png)
+![Tela Principal](weatherAppProject.jpeg)
 
 ## Configuração
 
@@ -29,5 +28,10 @@ Para executar o aplicativo, você precisa ter o Flutter e o Dart instalados no s
 1. Clone este repositório no seu computador:
 
    ```bash
-   git clone https://github.com/seu-usuario/previsao-do-tempo-app.git
+   git clone https://github.com/GabrielPz/weather_app.git
    ```
+
+2. Execute os seguintes comandos:
+
+   flutter pub get
+   flutter run
