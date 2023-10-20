@@ -15,12 +15,12 @@ class WeatherBlocBloc extends Bloc<WeatherBlocEvent, WeatherBlocState> {
         await dotenv.load(fileName: ".env");
         String apiKey = dotenv.env['API_KEY'] ?? 'Variavel não definida';
 
-        Position position = await Geolocator.getCurrentPosition();
         WeatherFactory wf =
             WeatherFactory(apiKey, language: Language.PORTUGUESE_BRAZIL);
 
         Weather weather = await wf.currentWeatherByLocation(
-            position.latitude, position.longitude);
+            event.position.latitude, event.position.longitude);
+        print(weather);
         emit(WeatherBlocSuccess(weather));
       } catch (e) {
         print(e);

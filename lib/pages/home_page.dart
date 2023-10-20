@@ -6,8 +6,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weather_app/widgets/cards.dart';
 
+import '../bloc/weather_bloc_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  Widget getWeatherIcon(int code) {
+    switch (code) {
+      case >= 200 && < 300:
+        return Image.asset('assets/1.png');
+      case >= 300 && < 400:
+        return Image.asset('assets/2.png');
+      case >= 500 && < 600:
+        return Image.asset('assets/3.png');
+      case >= 600 && < 700:
+        return Image.asset('assets/4.png');
+      case >= 700 && < 800:
+        return Image.asset('assets/5.png');
+      case == 800:
+        return Image.asset('assets/6.png');
+      case > 800 && <= 804:
+        return Image.asset('assets/7.png');
+
+      default:
+        return Image.asset('assets/7.png');
+    }
+  }
+
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+
+    if (hour >= 0 && hour < 12) {
+      return 'Bom Dia';
+    } else if (hour >= 12 && hour < 18) {
+      return 'Boa Tarde';
+    } else {
+      return 'Boa Noite';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,87 +97,105 @@ class HomePage extends StatelessWidget {
                       decoration:
                           const BoxDecoration(color: Colors.transparent)),
                 ),
-                SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Caruaru, Pernambuco',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w300)),
-                        Text(
-                          'Bom Dia',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Image.asset('assets/1.png'),
-                        const Center(
-                          child: Text(
-                            '21°C',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        const Center(
-                          child: Text(
-                            'Tempestade',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 25,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        const Center(
-                          child: Text(
-                            'Sexta 16 . 09:40',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        //TODO COMPONENTIZAR ESSA ROW<D E MANEIRA A NÂO RPETIR CÒDIGO
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CardRow(
-                                imageUrl: 'assets/11.png',
-                                tittle: 'Sunrise',
-                                subtittle: '05:04 am'),
-                            CardRow(
-                                imageUrl: 'assets/12.png',
-                                tittle: 'Sunrise',
-                                subtittle: '05:04 am'),
-                          ],
-                        ),
-                        Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CardRow(
-                                imageUrl: 'assets/13.png',
-                                tittle: 'Temp Min',
-                                subtittle: '05:04 am'),
-                            CardRow(
-                                imageUrl: 'assets/14.png',
-                                tittle: 'Temp Max',
-                                subtittle: '05:04 am'),
-                          ],
-                        ),
-                      ],
-                    ))
+                BlocBuilder<WeatherBlocBloc, WeatherBlocState>(
+                  builder: (context, state) {
+                    if (state is WeatherBlocSuccess) {
+                      return SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(state.weather.areaName!,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w300)),
+                              Text(
+                                getGreeting(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              getWeatherIcon(
+                                  state.weather.weatherConditionCode!),
+                              Center(
+                                child: Text(
+                                  '${state.weather.temperature!.celsius!.round()}°C',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              Center(
+                                child: Text(
+                                  state.weather.weatherDescription!
+                                      .toUpperCase(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              Center(
+                                child: Text(
+                                  DateFormat('EEEE dd .')
+                                      .format(state.weather.date!),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CardRow(
+                                      imageUrl: 'assets/11.png',
+                                      tittle: 'Nascer do Sol',
+                                      subtittle: DateFormat()
+                                          .add_jm()
+                                          .format(state.weather.sunrise!)),
+                                  CardRow(
+                                      imageUrl: 'assets/12.png',
+                                      tittle: 'Pôr do Sol',
+                                      subtittle: DateFormat()
+                                          .add_jm()
+                                          .format(state.weather.sunset!)),
+                                ],
+                              ),
+                              Divider(
+                                thickness: 1,
+                                color: Colors.grey,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CardRow(
+                                      imageUrl: 'assets/13.png',
+                                      tittle: 'Temp Min',
+                                      subtittle:
+                                          '${state.weather.tempMin!.celsius!.round()}°C'),
+                                  CardRow(
+                                      imageUrl: 'assets/14.png',
+                                      tittle: 'Temp Max',
+                                      subtittle:
+                                          '${state.weather.tempMax!.celsius!.round()}°C'),
+                                ],
+                              ),
+                            ],
+                          ));
+                    } else {
+                      return Container();
+                    }
+                  },
+                )
               ],
             ),
           ),
